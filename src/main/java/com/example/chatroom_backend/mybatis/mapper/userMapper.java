@@ -13,4 +13,7 @@ public interface userMapper {
 
     @Select("select * from users where userId = (#{id}) ")
     user search (String id);
+
+    @Select("select * from users where userName = (#{userName}), password = (#{password})")
+    user login(String userName, String password);
 }
