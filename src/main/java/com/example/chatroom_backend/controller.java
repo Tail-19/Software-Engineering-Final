@@ -9,6 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("http://127.0.0.1:4523/m1/2120303-0-default")
@@ -20,7 +24,7 @@ public class controller {
     public boolean register(user theUser){
         if (theUser.getPassword().length()>=8&&theUser.getUserName().length()!=0){
             theUser.setPictureURL(defaultURL);
-            theUserMapper.register(theUser);
+            theUserMapper.register(theUser.getUserName(),theUser.getPassword(),theUser.getPictureURL());
             return true;
         }
         return false;
@@ -72,5 +76,24 @@ public class controller {
             return true;
         }
         return false;
+    }
+
+    @PostMapping("/message/send_message")
+    public boolean send_message(String userId, String message){
+        theUserMapper.send_message(userId,message, LocalTime.now());
+        return true;
+    }
+
+    @GetMapping("/message/get_message")
+    public Map<String, Object> get_message(String userId){
+        Map<String, Object> result = new HashMap<>();
+        List<String> msgList = theUserMapper.get_message(userId);
+        if (msgList!=null){
+            result.put("success",true);
+        }else{
+            result.put("success",false);
+        }
+        result.put("message",msgList);
+        return result;
     }
 }
