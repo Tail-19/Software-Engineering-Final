@@ -5,7 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class user {
+    private String id;
     private String userName;
     private String password;
     private String pictureURL;
+
 }
