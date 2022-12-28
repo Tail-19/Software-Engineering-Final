@@ -2,6 +2,7 @@ package com.example.chatroom_backend;
 
 import com.example.chatroom_backend.mybatis.entity.user;
 import com.example.chatroom_backend.mybatis.entity.friend_list;
+import com.example.chatroom_backend.mybatis.entity.return_list;
 import com.example.chatroom_backend.mybatis.mapper.userMapper;
 import com.example.chatroom_backend.mybatis.mapper.listMapper;
 import jakarta.servlet.http.Cookie;
@@ -28,11 +29,6 @@ public class controller {
         if (theUser.getPassword().length()>=8&&theUser.getUserName().length()!=0){
             theUser.setPictureURL(defaultURL);
             theUserMapper.register(theUser.getUserName(),theUser.getPassword(),theUser.getPictureURL());
-            friend_list newlist=new friend_list();//新建用户时同时新建对应的用户列表，这样两个数据库同一用户的id相同
-            newlist.setOwner(theUser.getUserName());
-            user[] user_list={};
-            newlist.setItems(user_list);
-            thelist.add_newlsit(newlist);
             return true;
         }
         return false;
@@ -111,17 +107,22 @@ public class controller {
     public Map<String, Object> get_friendlist(@PathVariable("id") String id)
     {
         Map<String, Object> result = new HashMap<>();
-        //String ownername=theUserMapper.search(id).getUserName();
-        friend_list sqlresult = thelist.get_listbyid(Integer.parseInt(id));
+        friend_list[] sqlresult = thelist.get_listbyid(id);
         if (sqlresult!=null)
         {
+            return_list[] friend=new return_list[sqlresult.length];
+            int i=0;
+            for(i=0;i<sqlresult.length;i++)
+            {
+                friend[i]=new return_list(sqlresult[i].getFriendID(),sqlresult[i].getFriendName());
+            }
             result.put("success",true);
-            result.put("friend",sqlresult.getItems());
+            result.put("friend",friend);
         }
         else
         {
             result.put("success",false);
-            Object[] friend=new Object[1];
+            return_list[] friend={};
             result.put("friend",friend);
         }
         return result;
@@ -132,28 +133,24 @@ public class controller {
     {
 
         Map<String, Object> result = new HashMap<>();
-        friend_list sql_user = thelist.get_listbyid(Integer.parseInt(user_id));
-        friend_list sql_add = thelist.get_listbyid(Integer.parseInt(add_id));
+        String name1=theUserMapper.search(add_id).getUserName();
+        String name2=theUserMapper.search(user_id).getUserName();
+
         boolean success=false;
-        if(sql_add!=null&&sql_user!=null)
+        if(thelist.get_listbytwoid(add_id,user_id)==null)
         {
-            user[] new_user=new user[sql_user.getItems().length+1];
-            int i=0;
-            for(i=0;i<sql_user.getItems().length;i++)
-            {
-                new_user[i]=sql_user.getItems()[i];
-            }
-            new_user[sql_user.getItems().length]=theUserMapper.search(add_id);
-            sql_user.setItems(new_user);
-            thelist.update_list(sql_user);
-            user[] new_add=new user[sql_add.getItems().length+1];
-            for(i=0;i<sql_add.getItems().length;i++)
-            {
-                new_add[i]=sql_add.getItems()[i];
-            }
-            new_add[sql_add.getItems().length]=theUserMapper.search(add_id);
-            sql_add.setItems(new_add);
-            thelist.update_list(sql_add);
+            friend_list newlist1=new friend_list();
+            newlist1.setFriendID(add_id);
+            newlist1.setOwnerID(user_id);
+            newlist1.setFriendName(name1);
+            newlist1.setFriendID(name2);
+            friend_list newlist2=new friend_list();
+            newlist2.setFriendID(user_id);
+            newlist2.setOwnerID(add_id);
+            newlist2.setFriendName(name2);
+            newlist2.setFriendID(name1);
+            thelist.add_newlsit(newlist1);
+            thelist.add_newlsit(newlist2);
             success=true;
         }
         result.put("success",success);
@@ -164,35 +161,11 @@ public class controller {
     public Map<String, Object> delete_friendlist(@RequestParam("delete_id") String delete_id,@RequestParam("user_id") String user_id)
     {
         Map<String, Object> result = new HashMap<>();
-        friend_list sql_user = thelist.get_listbyid(Integer.parseInt(user_id));
-        friend_list sql_delete = thelist.get_listbyid(Integer.parseInt(delete_id));
-        Boolean success=false;
-        if(sql_delete.exist(user_id)&&sql_user.exist(delete_id))
+        boolean success=false;
+        if(thelist.get_listbytwoid(delete_id,user_id)!=null)
         {
-            user[] new_user=new user[sql_user.getItems().length-1];
-            int i=0,j=0;
-            for(i=0;i<sql_user.getItems().length;i++)
-            {
-                if(!sql_user.getItems()[i].equals(delete_id))
-                {
-                    new_user[j]=sql_user.getItems()[i];
-                    j++;
-                }
-            }
-            sql_user.setItems(new_user);
-            thelist.update_list(sql_user);
-            user[] new_delete=new user[sql_delete.getItems().length-1];
-            j=0;
-            for(i=0;i<sql_delete.getItems().length;i++)
-            {
-                if(!sql_delete.getItems()[i].equals(user_id))
-                {
-                    new_delete[j]=sql_delete.getItems()[i];
-                    j++;
-                }
-            }
-            sql_delete.setItems(new_delete);
-            thelist.update_list(sql_delete);
+            thelist.deleteById(delete_id,user_id);
+            thelist.deleteById(user_id,delete_id);
             success=true;
         }
         result.put("success",success);

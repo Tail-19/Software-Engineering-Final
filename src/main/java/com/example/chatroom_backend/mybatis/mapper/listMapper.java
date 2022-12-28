@@ -6,26 +6,17 @@ import org.apache.ibatis.annotations.*;
 import java.time.LocalTime;
 import java.util.List;
 public interface listMapper {
-    @Insert("insert into list(owner, items) values (#{owner},#{items})")
+    @Insert("insert into list(ownerID, ownerName,friendID,friendName) values (#{ownerID},#{ownerName},#{friendID},#{friendName})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void add_newlsit(friend_list flist);
 
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "owner", column = "owner"),
-            @Result(property = "items", column = "items")
-    })
-    @Select("select * from list where owner = (#{own}) ")
-    friend_list get_listbyowner (String own);
 
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "owner", column = "owner"),
-            @Result(property = "items", column = "items")
-    })
-    @Select("select * from list where id = (#{id}) ")
-    friend_list get_listbyid (int id);
+    @Select("select * from list where ownerID = #{id} ")
+    friend_list[] get_listbyid (String id);
 
-    @Update("update todo set items = #{items} where id = #{id}")
-    void update_list(friend_list flist);
+    @Select("select * from list where ownerID = #{id1} and friendID= #{id2}")
+    friend_list[] get_listbytwoid (String id1,String id2);
+
+    @Delete("delete from todo where ownerID = #{oid} and friendID=#{fid}")
+    void deleteById(String oid,String fid);
 }
