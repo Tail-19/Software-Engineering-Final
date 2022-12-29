@@ -30,42 +30,42 @@ public class controller {
     String defaultURL= basePath+"/defaultPicture";
     @PostMapping("/user/register")
     public Map<String, Object> register(String userName, String password){
-        System.out.println(userName);
+        user theUser = new user();
+        theUser.setPictureURL(defaultURL);
+        theUser.setUserName(userName);
+        theUser.setPassword(password);
         Map<String, Object> result = new HashMap<>();
         if (password.length()>=8&&userName.length()!=0){
             int userid;
-            userid = theUserMapper.register(userName,password,defaultURL);
+            theUserMapper.register(theUser);
             result.put("success",true);
-            result.put("userid", userid);
+            result.put("userid", theUser.getUserId());
         }
-        result.put("success",false);
+        else{
+            result.put("success",false);
+            result.put("userid", null);
+        }
         return result;
     }
     @PutMapping("/user/change_info")
-    public boolean change_info(String newUserName, String newPassword, HttpServletRequest request){
-        String userId = null;
-        Cookie[] cookies=request.getCookies();
-        if (cookies != null){
-            for (Cookie cookie : cookies){
-                if (cookie.getName().equals("userId")){
-                    userId=cookie.getValue();
-                }
-            }
-        }
-        if ((newUserName.length()!=0&&newPassword.length()>=8)&&userId != null){
+    public boolean change_info(String newUserName, String newPassword, String userId){
+        if ((newUserName.length()!=0&&newPassword.length()>=8)&&search(userId) != null){
             theUserMapper.change_info(newUserName,newPassword,userId);
             return true;
         }
         return false;
     }
 
-    @GetMapping("/user/search")
-    public user search(String id){
-        return theUserMapper.search(id);
+    @RequestMapping(value = "/user/search/{id}", method = RequestMethod.GET)
+    public user search(@PathVariable("id")String userId){
+        if (theUserMapper.search(userId)!=null){
+            return theUserMapper.search(userId);
+        }
+        return null;
     }
 
     @PutMapping("/user/uploadPicture")
-    public boolean uploadPicture(MultipartFile picture){
+    public boolean uploadPicture(MultipartFile picture, String userId){
         if (picture!=null){
             String filePath = basePath+"/"+picture.getOriginalFilename();
             File desFile = new File(filePath);
@@ -77,6 +77,7 @@ public class controller {
             }catch (IllegalStateException|IOException e){
                 e.printStackTrace();
             }
+            theUserMapper.uploadPicture(filePath, userId);
             return true;
         }
         return false;
@@ -84,7 +85,7 @@ public class controller {
 
     @GetMapping("/user/login")
     public boolean login(String userName, String password){
-        if (theUserMapper.login(userName, password)!=null){
+        if (theUserMapper.login(userName, password).size()!=0){
             return true;
         }
         return false;
@@ -96,8 +97,9 @@ public class controller {
         return true;
     }
 
-    @GetMapping("/message/get_message")
-    public Map<String, Object> get_message(String userId){
+
+    @RequestMapping(value = "/message/get_message/{id}", method = RequestMethod.GET)
+    public Map<String, Object> get_message(@PathVariable("id") String userId){
         Map<String, Object> result = new HashMap<>();
         List<String> msgList = theUserMapper.get_message(userId);
         if (msgList!=null){
