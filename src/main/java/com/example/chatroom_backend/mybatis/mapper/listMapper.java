@@ -17,6 +17,6 @@ public interface listMapper {
     @Select("select * from list where ownerID = #{id1} and friendID= #{id2}")
     friend_list[] get_listbytwoid (String id1,String id2);
 
-    @Delete("delete from todo where ownerID = #{oid} and friendID=#{fid}")
+    @Delete("delete from list where ownerID = #{oid} and friendID=#{fid}")
     void deleteById(String oid,String fid);
 }
