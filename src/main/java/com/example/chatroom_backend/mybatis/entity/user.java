@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class user {
     @TableId(type = IdType.AUTO)
-    private String id;
+    private String userId;
     private String userName;
     private String password;
     private String pictureURL;

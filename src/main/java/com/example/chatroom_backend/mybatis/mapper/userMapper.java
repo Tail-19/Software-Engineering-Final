@@ -11,19 +11,22 @@ import java.util.List;
 @Mapper
 @Repository
 public interface userMapper extends BaseMapper<user> {
-    @Insert("insert into users(userName, password, pictureURL) values (#{userName},#{password},#{pictureURL})")
-    @Options(useGeneratedKeys = true)
-    int register(String userName, String password, String pictureURL);
+    @Insert("insert into users(userName, password, pictureURL) values (#{theUser.userName},#{theUser.password},#{theUser.pictureURL})")
+    @Options(useGeneratedKeys = true, keyProperty = "theUser.userId")
+    void register(@Param("theUser") user theUser);
 
     @Update("update users set userName = #{userName}, password = #{password} where userId = #{id}")
-    int change_info(@Param("userName") String userName,@Param("password") String password, @Param("id") String id);
+    void change_info(@Param("userName") String userName,@Param("password") String password, @Param("id") String id);
+
+    @Update("update users set pictureURL = #{pictureURL} where userId = #{id}")
+    void uploadPicture(@Param("pictureURL") String pictureURL, @Param("id") String id);
 
     @Results({
             @Result(property = "userName", column = "userName"),
             @Result(property = "password", column = "password"),
             @Result(property = "pictureURL", column = "pictureURL")
     })
-    @Select("select * from users where userId = (#{id}) ")
+    @Select("select * from users where userId = #{id} ")
     user search (String id);
 
     @Results({
@@ -31,8 +34,8 @@ public interface userMapper extends BaseMapper<user> {
             @Result(property = "password", column = "password"),
             @Result(property = "pictureURL", column = "pictureURL")
     })
-    @Select("select * from users where userName = (#{userName}), password = (#{password})")
-    List<user> login(@Param("userName") String userName, @Param("password") String password);
+    @Select("select * from users where userName = #{userName} and password = #{password}")
+    List<user> login(String userName, String password);
 
     @Insert("insert into msgs(userId, content, time) values (#{userId},#{content}, #{time})")
     void send_message(@Param("userId") String userId, @Param("content") String content, @Param("time") LocalTime time);
