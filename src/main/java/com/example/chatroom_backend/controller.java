@@ -7,6 +7,10 @@ import com.example.chatroom_backend.mybatis.mapper.userMapper;
 import com.example.chatroom_backend.mybatis.mapper.listMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.ibatis.annotations.Mapper;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,20 +22,25 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("http://127.0.0.1:4523/m1/2120303-0-default")
+@RequestMapping("/test")
 public class controller {
+
     userMapper theUserMapper;
     listMapper thelist;
     String basePath = controller.class.getClassLoader().getResource("").getPath()+"/pictures";
     String defaultURL= basePath+"/defaultPicture";
     @PostMapping("/user/register")
-    public boolean register(user theUser){
-        if (theUser.getPassword().length()>=8&&theUser.getUserName().length()!=0){
-            theUser.setPictureURL(defaultURL);
-            theUserMapper.register(theUser.getUserName(),theUser.getPassword(),theUser.getPictureURL());
-            return true;
+    public Map<String, Object> register(String userName, String password){
+        System.out.println(userName);
+        Map<String, Object> result = new HashMap<>();
+        if (password.length()>=8&&userName.length()!=0){
+            int userid;
+            userid = theUserMapper.register(userName,password,defaultURL);
+            result.put("success",true);
+            result.put("userid", userid);
         }
-        return false;
+        result.put("success",false);
+        return result;
     }
     @PutMapping("/user/change_info")
     public boolean change_info(String newUserName, String newPassword, HttpServletRequest request){

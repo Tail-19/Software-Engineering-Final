@@ -2,12 +2,15 @@ package com.example.chatroom_backend.mybatis.mapper;
 
 import com.example.chatroom_backend.mybatis.entity.user;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
 import java.util.List;
 
+@Mapper
+@Repository
 public interface userMapper {
-    @Insert("insert into users(userName, password, picture) values (#{userName},#{password},#{pictureURL})")
+    @Insert("insert into users(userName, password, pictureURL) values (#{userName},#{password},#{pictureURL})")
     @Options(useGeneratedKeys = true, keyProperty = "userId")
     int register(@Param("userName") String userName, @Param("password") String password, @Param("pictureURL") String pictureURL);
 
