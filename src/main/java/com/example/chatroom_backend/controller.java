@@ -84,8 +84,8 @@ public class controller {
     }
 
     @GetMapping("/user/login")
-    public boolean login(String userName, String password){
-        if (theUserMapper.login(userName, password).size()!=0){
+    public boolean login(String userId, String password){
+        if (theUserMapper.login(userId, password).size()!=0){
             return true;
         }
         return false;
