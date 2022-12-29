@@ -2,22 +2,18 @@ package com.example.chatroom_backend;
 
 import com.example.chatroom_backend.mybatis.entity.user;
 import com.example.chatroom_backend.mybatis.entity.friend_list;
-import com.example.chatroom_backend.mybatis.entity.return_list;
 import com.example.chatroom_backend.mybatis.mapper.userMapper;
 import com.example.chatroom_backend.mybatis.mapper.listMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.ibatis.annotations.Mapper;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +24,7 @@ public class controller {
 
     @Resource
     userMapper theUserMapper;
+    @Resource
     listMapper thelist;
     String basePath = controller.class.getClassLoader().getResource("").getPath()+"/pictures";
     String defaultURL= basePath+"/defaultPicture";
@@ -119,22 +116,30 @@ public class controller {
     {
         Map<String, Object> result = new HashMap<>();
         friend_list[] sqlresult = thelist.get_listbyid(id);
+        System.out.println(sqlresult);
+        int i=0;
+        for(i=0;i<sqlresult.length;i++)
+        {
+            System.out.println(sqlresult[i]);
+        }
         if (sqlresult!=null)
         {
-            return_list[] friend=new return_list[sqlresult.length];
-            int i=0;
+            List<Map<String, Object>> friendlist=new ArrayList<>();
             for(i=0;i<sqlresult.length;i++)
             {
-                friend[i]=new return_list(sqlresult[i].getFriendID(),sqlresult[i].getFriendName());
+                Map<String, Object> a=new HashMap<>();
+                a.put("id",sqlresult[i].getFriendID());
+                a.put("username",sqlresult[i].getFriendName());
+                friendlist.add(a);
             }
+
             result.put("success",true);
-            result.put("friend",friend);
+            result.put("friend",friendlist);
         }
         else
         {
             result.put("success",false);
-            return_list[] friend={};
-            result.put("friend",friend);
+            result.put("friend",new ArrayList<>());
         }
         return result;
     }
@@ -146,22 +151,14 @@ public class controller {
         Map<String, Object> result = new HashMap<>();
         String name1=theUserMapper.search(add_id).getUserName();
         String name2=theUserMapper.search(user_id).getUserName();
-
+        //String name1="a";
+        //String name2="b";
         boolean success=false;
+        System.out.println(thelist.get_listbytwoid(add_id,user_id));
         if(thelist.get_listbytwoid(add_id,user_id)==null)
         {
-            friend_list newlist1=new friend_list();
-            newlist1.setFriendID(add_id);
-            newlist1.setOwnerID(user_id);
-            newlist1.setFriendName(name1);
-            newlist1.setFriendID(name2);
-            friend_list newlist2=new friend_list();
-            newlist2.setFriendID(user_id);
-            newlist2.setOwnerID(add_id);
-            newlist2.setFriendName(name2);
-            newlist2.setFriendID(name1);
-            thelist.add_newlsit(newlist1);
-            thelist.add_newlsit(newlist2);
+            thelist.add_list(add_id,name1,user_id,name2);
+            thelist.add_list(user_id,name2,add_id,name1);
             success=true;
         }
         result.put("success",success);

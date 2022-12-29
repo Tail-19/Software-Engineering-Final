@@ -16,3 +16,24 @@ CREATE TABLE msgs
     time time DEFAULT NULL,
     PRIMARY KEY (id)
 );
+DROP TABLE IF EXISTS `list`;
+CREATE TABLE `list`
+(
+    `id`      bigint NOT NULL AUTO_INCREMENT,
+    `ownerID` varchar DEFAULT NULL,
+    `ownerName` varchar DEFAULT NULL,
+    `friendID` varchar DEFAULT NULL,
+    `friendName` varchar DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
+
+
+
+
+
+
+
+
+
+
