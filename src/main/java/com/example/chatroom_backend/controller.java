@@ -5,6 +5,7 @@ import com.example.chatroom_backend.mybatis.entity.friend_list;
 import com.example.chatroom_backend.mybatis.entity.return_list;
 import com.example.chatroom_backend.mybatis.mapper.userMapper;
 import com.example.chatroom_backend.mybatis.mapper.listMapper;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RequestMapping("/test")
 public class controller {
 
+    @Resource
     userMapper theUserMapper;
     listMapper thelist;
     String basePath = controller.class.getClassLoader().getResource("").getPath()+"/pictures";
