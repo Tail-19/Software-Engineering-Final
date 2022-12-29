@@ -11,8 +11,9 @@ DROP TABLE IF EXISTS msgs;
 CREATE TABLE msgs
 (
     id      bigint NOT NULL AUTO_INCREMENT,
-    userId varchar DEFAULT NULL,
+    receiveUserId varchar DEFAULT NULL,
     content varchar DEFAULT NULL,
+    senderUserId varchar DEFAULT NULL,
     time time DEFAULT NULL,
     PRIMARY KEY (id)
 );

@@ -92,22 +92,30 @@ public class controller {
     }
 
     @PostMapping("/message/send_message")
-    public boolean send_message(String userId, String message){
-        theUserMapper.send_message(userId,message, LocalTime.now());
+    public boolean send_message(String receiveUserId, String message, String senderUserId){
+        theUserMapper.send_message(receiveUserId, message, senderUserId, LocalTime.now());
         return true;
     }
 
 
-    @RequestMapping(value = "/message/get_message/{id}", method = RequestMethod.GET)
-    public Map<String, Object> get_message(@PathVariable("id") String userId){
+    @RequestMapping(value = "/message/get_message/{senderId}/{receiverId}", method = RequestMethod.GET)
+    public Map<String, Object> get_message(@PathVariable("senderId") String senderId, @PathVariable("receiverId") String receiverId){
         Map<String, Object> result = new HashMap<>();
-        List<String> msgList = theUserMapper.get_message(userId);
+        List<String> msgList = theUserMapper.get_message(senderId, receiverId);
         if (msgList!=null){
             result.put("success",true);
         }else{
             result.put("success",false);
         }
-        result.put("message",msgList);
+        List<Map<String, String>> returnMsg = new ArrayList<>();
+        for(int i=0;i<msgList.size();i++){
+            Map<String, String>tmp = new HashMap<>();
+            tmp.put("senderId", senderId);
+            tmp.put("receiverId", receiverId);
+            tmp.put("text", msgList.get(i));
+            returnMsg.add(tmp);
+        }
+        result.put("message",returnMsg);
         return result;
     }
 
