@@ -168,12 +168,12 @@ public class controller {
             }
 
             result.put("success",true);
-            result.put("friend",friendlist);
+            result.put("friend_list",friendlist);
         }
         else
         {
             result.put("success",false);
-            result.put("friend",new ArrayList<>());
+            result.put("friend_list",new ArrayList<>());
         }
         return result;
     }
@@ -192,7 +192,7 @@ public class controller {
         if(thelist.get_listbytwoid(add_id,user_id)==null)
         {
             thelist.add_list(add_id,name1,user_id,name2);
-            thelist.add_list(add_id,name2,user_id,name1);
+            thelist.add_list(user_id,name2,add_id,name1);
             success=true;
         }
         result.put("success",success);
