@@ -34,8 +34,8 @@ public interface userMapper extends BaseMapper<user> {
             @Result(property = "password", column = "password"),
             @Result(property = "pictureURL", column = "pictureURL")
     })
-    @Select("select * from users where userName = #{userName} and password = #{password}")
-    List<user> login(String userName, String password);
+    @Select("select * from users where userId = #{userId} and password = #{password}")
+    List<user> login(int userId, String password);
 
     @Results({
             @Result(property = "userName", column = "userName"),

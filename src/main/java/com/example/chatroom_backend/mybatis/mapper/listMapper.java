@@ -18,6 +18,12 @@ public interface listMapper {
     int add_list(String ownerID, String ownerName, String friendID,String friendName);
 
 
+    @Results({
+            @Result(property = "ownerID", column = "ownerID"),
+            @Result(property = "ownerName", column = "ownerName"),
+            @Result(property = "friendID", column = "friendID"),
+            @Result(property = "friendName", column = "friendName")
+    })
     @Select("select * from list where ownerID = #{id} ")
     friend_list[] get_listbyid (String id);
 

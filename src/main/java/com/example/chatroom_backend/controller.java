@@ -7,11 +7,14 @@ import com.example.chatroom_backend.mybatis.mapper.listMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,13 +32,13 @@ public class controller {
     String basePath = controller.class.getClassLoader().getResource("").getPath()+"/pictures";
     String defaultURL= basePath+"/defaultPicture";
     @PostMapping("/user/register")
-    public Map<String, Object> register(String userName, String password){
+    public Map<String, Object> register(@RequestBody Map<String,String> input){
         user theUser = new user();
         theUser.setPictureURL(defaultURL);
-        theUser.setUserName(userName);
-        theUser.setPassword(password);
+        theUser.setUserName(input.get("userName"));
+        theUser.setPassword(input.get("password"));
         Map<String, Object> result = new HashMap<>();
-        if ((password.length()>=8&&userName.length()!=0)&&theUserMapper.findByName(userName)==null){
+        if ((input.get("password").length()>=8&&input.get("userName").length()!=0)&&theUserMapper.findByName(input.get("userName"))==null){
             int userid;
             theUserMapper.register(theUser);
             result.put("success",true);
@@ -48,12 +51,20 @@ public class controller {
         return result;
     }
     @PutMapping("/user/change_info")
-    public boolean change_info(String newUserName, String newPassword, String userId){
+    public Map<String, Object> change_info(@RequestBody Map<String,String> input){
+        Map<String, Object> result = new HashMap<>();
+        String newUserName = input.get("NewUserName");
+        String newPassword = input.get("NewPassword");
+        String userId = input.get("UserId");
+        //int userId = (input.get("UserId").charAt(0))-'0';
+        System.out.println(userId);
         if ((newUserName.length()!=0&&newPassword.length()>=8)&&search(userId) != null){
             theUserMapper.change_info(newUserName,newPassword,userId);
-            return true;
+            result.put("success",true);
+        }else{
+            result.put("success",false);
         }
-        return false;
+        return result;
     }
 
     @RequestMapping(value = "/user/search/{id}", method = RequestMethod.GET)
@@ -65,7 +76,10 @@ public class controller {
     }
 
     @PutMapping("/user/uploadPicture")
-    public boolean uploadPicture(MultipartFile picture, String userId){
+    public Map<String, Object> uploadPicture(@RequestBody Map<String,Object> input){
+        Map<String, Object> result = new HashMap<>();
+        MultipartFile picture = (MultipartFile)(input.get("picture"));
+        String userId = (String)input.get("userId");
         if (picture!=null){
             String filePath = basePath+"/"+picture.getOriginalFilename();
             File desFile = new File(filePath);
@@ -78,23 +92,33 @@ public class controller {
                 e.printStackTrace();
             }
             theUserMapper.uploadPicture(filePath, userId);
-            return true;
+            result.put("success", true);
+        }else{
+            result.put("success", false);
         }
-        return false;
+        return result;
     }
 
     @GetMapping("/user/login")
-    public boolean login(String userName, String password){
+    public Map<String, Object> login(int userName, String password){
+        Map<String, Object> result = new HashMap<>();
         if (theUserMapper.login(userName, password).size()!=0){
-            return true;
+            result.put("success", true);
+        }else{
+            result.put("success", false);
         }
-        return false;
+        return result;
     }
 
     @PostMapping("/message/send_message")
-    public boolean send_message(String receiveUserId, String message, String senderUserId){
+    public Map<String, Object> send_message(@RequestBody Map<String,String> input){
+        Map<String, Object> result = new HashMap<>();
+        String receiveUserId = input.get("receiveUserId");
+        String message = input.get("message");
+        String senderUserId = input.get("senderUserId");
         theUserMapper.send_message(receiveUserId, message, senderUserId, LocalTime.now());
-        return true;
+        result.put("success", true);
+        return result;
     }
 
 
@@ -155,20 +179,20 @@ public class controller {
     }
 
     @PostMapping ("/friend_list/add_friend")
-    public Map<String, Object> add_friendlist(@RequestParam("add_id") String add_id,@RequestParam("user_id") String user_id)
+    public Map<String, Object> add_friendlist(@RequestBody Map<String,String> input)
     {
-
+        String add_id = input.get("add_id");
+        String user_id = input.get("user_id");
         Map<String, Object> result = new HashMap<>();
         String name1=theUserMapper.search(add_id).getUserName();
         String name2=theUserMapper.search(user_id).getUserName();
         //String name1="a";
         //String name2="b";
         boolean success=false;
-        System.out.println(thelist.get_listbytwoid(add_id,user_id));
         if(thelist.get_listbytwoid(add_id,user_id)==null)
         {
             thelist.add_list(add_id,name1,user_id,name2);
-            thelist.add_list(user_id,name2,add_id,name1);
+            thelist.add_list(add_id,name2,user_id,name1);
             success=true;
         }
         result.put("success",success);
@@ -176,8 +200,10 @@ public class controller {
     }
 
     @DeleteMapping("/friend_list/delete")
-    public Map<String, Object> delete_friendlist(@RequestParam("delete_id") String delete_id,@RequestParam("user_id") String user_id)
+    public Map<String, Object> delete_friendlist(@RequestBody Map<String,String> input)
     {
+        String delete_id = input.get("delete_id");
+        String user_id = input.get("user_id");
         Map<String, Object> result = new HashMap<>();
         boolean success=false;
         if(thelist.get_listbytwoid(delete_id,user_id)!=null)
@@ -190,4 +216,13 @@ public class controller {
         return result;
     }
 
+    @Bean
+    public CommonsRequestLoggingFilter logFilter(){
+        CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
+        filter.setIncludeQueryString(true);
+        filter.setIncludePayload(true);
+        filter.setMaxPayloadLength(10000);
+        filter.setIncludeHeaders(false);
+        return filter;
+    }
 }
