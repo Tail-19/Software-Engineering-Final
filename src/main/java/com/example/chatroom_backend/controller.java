@@ -35,7 +35,7 @@ public class controller {
         theUser.setUserName(userName);
         theUser.setPassword(password);
         Map<String, Object> result = new HashMap<>();
-        if (password.length()>=8&&userName.length()!=0){
+        if ((password.length()>=8&&userName.length()!=0)&&theUserMapper.findByName(userName)==null){
             int userid;
             theUserMapper.register(theUser);
             result.put("success",true);
@@ -84,8 +84,8 @@ public class controller {
     }
 
     @GetMapping("/user/login")
-    public boolean login(String userId, String password){
-        if (theUserMapper.login(userId, password).size()!=0){
+    public boolean login(String userName, String password){
+        if (theUserMapper.login(userName, password).size()!=0){
             return true;
         }
         return false;

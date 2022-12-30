@@ -34,8 +34,16 @@ public interface userMapper extends BaseMapper<user> {
             @Result(property = "password", column = "password"),
             @Result(property = "pictureURL", column = "pictureURL")
     })
-    @Select("select * from users where userId = #{userId} and password = #{password}")
-    List<user> login(String userId, String password);
+    @Select("select * from users where userName = #{userName} and password = #{password}")
+    List<user> login(String userName, String password);
+
+    @Results({
+            @Result(property = "userName", column = "userName"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "pictureURL", column = "pictureURL")
+    })
+    @Select("select * from users where userName = #{userName} ")
+    user findByName (String userName);
 
     @Insert("insert into msgs(receiveUserId, content, senderUserId, time) values (#{receiveUserId},#{content}, #{senderUserId}, #{time})")
     void send_message(@Param("receiveUserId") String receiveUserId, @Param("content") String content, @Param("senderUserId") String senderUserId, @Param("time") LocalTime time);
