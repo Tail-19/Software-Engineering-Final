@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -49,6 +50,6 @@ public interface userMapper extends BaseMapper<user> {
     void send_message(@Param("receiveUserId") String receiveUserId, @Param("content") String content, @Param("senderUserId") String senderUserId, @Param("time") LocalTime time);
 
 
-    @Select("select content from msgs where receiveUserId = (#{receiverId}) and senderUserId = #{senderUserId} order by time asc")
-    List<String> get_message(String senderUserId, String receiverId);
+    @Select("select receiveUserId, content, senderUserId from msgs where (receiveUserId = #{receiverId} and senderUserId = #{senderUserId}) or (receiveUserId = #{senderUserId} and senderUserId = #{receiverId}) order by time asc")
+    List<Map<String,String>> get_message(String senderUserId, String receiverId);
 }

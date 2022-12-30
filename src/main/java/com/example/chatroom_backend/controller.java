@@ -125,7 +125,7 @@ public class controller {
     @RequestMapping(value = "/message/get_message/{senderId}/{receiverId}", method = RequestMethod.GET)
     public Map<String, Object> get_message(@PathVariable("senderId") String senderId, @PathVariable("receiverId") String receiverId){
         Map<String, Object> result = new HashMap<>();
-        List<String> msgList = theUserMapper.get_message(senderId, receiverId);
+        List<Map<String, String>> msgList = theUserMapper.get_message(senderId, receiverId);
         if (msgList!=null){
             result.put("success",true);
         }else{
@@ -134,9 +134,9 @@ public class controller {
         List<Map<String, String>> returnMsg = new ArrayList<>();
         for(int i=0;i<msgList.size();i++){
             Map<String, String>tmp = new HashMap<>();
-            tmp.put("senderId", senderId);
-            tmp.put("receiverId", receiverId);
-            tmp.put("text", msgList.get(i));
+            tmp.put("senderId", msgList.get(i).get("SENDERUSERID"));
+            tmp.put("receiverId", msgList.get(i).get("RECEIVEUSERID"));
+            tmp.put("text", msgList.get(i).get("CONTENT"));
             returnMsg.add(tmp);
         }
         result.put("message",returnMsg);
@@ -162,7 +162,7 @@ public class controller {
             for(i=0;i<sqlresult.length;i++)
             {
                 Map<String, Object> a=new HashMap<>();
-                a.put("id",sqlresult[i].getFriendID());
+                a.put("userid",sqlresult[i].getFriendID());
                 a.put("username",sqlresult[i].getFriendName());
                 friendlist.add(a);
             }
