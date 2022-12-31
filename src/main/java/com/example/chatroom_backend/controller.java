@@ -81,18 +81,19 @@ public class controller {
 
 
     @PutMapping(value = "/user/uploadPicture")
-    public Map<String, Object> uploadPicture(@RequestParam("userId")String userId, @RequestParam("file")MultipartFile picture){
+    public Map<String, Object> uploadPicture(String userId, MultipartFile file){
+        System.out.println(1);
         Map<String, Object> result = new HashMap<>();
         //MultipartFile picture = (MultipartFile)(input.get("file"));
         //String userId = (String)input.get("userId");
-        if (picture!=null){
-            String filePath = basePath+"/"+picture.getOriginalFilename();
+        if (file!=null){
+            String filePath = basePath+"/"+file.getOriginalFilename();
             File desFile = new File(filePath);
             if (!desFile.getParentFile().exists()){
                 desFile.mkdirs();
             }
             try{
-                picture.transferTo(desFile);
+                file.transferTo(desFile);
             }catch (IllegalStateException|IOException e){
                 e.printStackTrace();
             }
@@ -195,7 +196,7 @@ public class controller {
             {
                 Map<String, Object> a=new HashMap<>();
                 a.put("userid",sqlresult[i].getFriendID());
-                a.put("username",sqlresult[i].getFriendName());
+                a.put("username",theUserMapper.search(sqlresult[i].getFriendID()).getUserName());
                 friendlist.add(a);
             }
 
@@ -232,10 +233,10 @@ public class controller {
     }
 
     @DeleteMapping("/friend_list/delete")
-    public Map<String, Object> delete_friendlist(@RequestBody Map<String,String> input)
+    public Map<String, Object> delete_friendlist(String delete_id, String user_id)
     {
-        String delete_id = input.get("delete_id");
-        String user_id = input.get("user_id");
+        //String delete_id = input.get("delete_id");
+        //String user_id = input.get("user_id");
         Map<String, Object> result = new HashMap<>();
         boolean success=false;
         if(thelist.get_listbytwoid(delete_id,user_id)!=null)
