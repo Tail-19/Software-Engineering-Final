@@ -22,6 +22,9 @@ public interface userMapper extends BaseMapper<user> {
     @Update("update users set pictureURL = #{pictureURL} where userId = #{id}")
     void uploadPicture(@Param("pictureURL") String pictureURL, @Param("id") String id);
 
+    @Select("select pictureURL from users where userId = #{userId}")
+    String getPictrue(String userId);
+
     @Results({
             @Result(property = "userName", column = "userName"),
             @Result(property = "password", column = "password"),

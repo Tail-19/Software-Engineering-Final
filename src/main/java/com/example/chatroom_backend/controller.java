@@ -8,13 +8,17 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +33,7 @@ public class controller {
     userMapper theUserMapper;
     @Resource
     listMapper thelist;
-    String basePath = controller.class.getClassLoader().getResource("").getPath()+"/pictures";
+    String basePath = "H:/web/final_homework_backend/chatroom_backend/src/main/resources/pictures";
     String defaultURL= basePath+"/defaultPicture";
     @PostMapping("/user/register")
     public Map<String, Object> register(@RequestBody Map<String,String> input){
@@ -75,11 +79,12 @@ public class controller {
         return null;
     }
 
-    @PutMapping("/user/uploadPicture")
-    public Map<String, Object> uploadPicture(@RequestBody Map<String,Object> input){
+
+    @PutMapping(value = "/user/uploadPicture")
+    public Map<String, Object> uploadPicture(@RequestParam("userId")String userId, @RequestParam("file")MultipartFile picture){
         Map<String, Object> result = new HashMap<>();
-        MultipartFile picture = (MultipartFile)(input.get("picture"));
-        String userId = (String)input.get("userId");
+        //MultipartFile picture = (MultipartFile)(input.get("file"));
+        //String userId = (String)input.get("userId");
         if (picture!=null){
             String filePath = basePath+"/"+picture.getOriginalFilename();
             File desFile = new File(filePath);
@@ -91,10 +96,29 @@ public class controller {
             }catch (IllegalStateException|IOException e){
                 e.printStackTrace();
             }
+            System.out.println(filePath);
             theUserMapper.uploadPicture(filePath, userId);
             result.put("success", true);
         }else{
             result.put("success", false);
+        }
+        return result;
+    }
+
+    @GetMapping(value = "/user/getPicture", produces = MediaType.IMAGE_JPEG_VALUE)
+    public Map<String, Object> getPicture(@PathVariable("userId") String userId) throws IOException {
+        Map<String, Object> result = new HashMap<>();
+        String path = theUserMapper.getPictrue(userId);
+        if (path!=null){
+            File file = new File(path);
+            FileInputStream inputStream = new FileInputStream(file);
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes, 0, inputStream.available());
+            result.put("success",true);
+            result.put("picUrl",bytes);
+        }else{
+            result.put("success",false);
+            result.put("picUrl",null);
         }
         return result;
     }
