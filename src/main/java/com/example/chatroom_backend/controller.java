@@ -34,7 +34,7 @@ public class controller {
     @Resource
     listMapper thelist;
     String basePath = "H:/web/final_homework_backend/chatroom_backend/src/main/resources/pictures";
-    String defaultURL= basePath+"/defaultPicture";
+    String defaultURL= basePath+"/defaultPicture.jpg";
     @PostMapping("/user/register")
     public Map<String, Object> register(@RequestBody Map<String,String> input){
         user theUser = new user();
@@ -105,22 +105,30 @@ public class controller {
         return result;
     }
 
-    @GetMapping(value = "/user/getPicture", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/user/getPicture/{userId}")
     public Map<String, Object> getPicture(@PathVariable("userId") String userId) throws IOException {
         Map<String, Object> result = new HashMap<>();
         String path = theUserMapper.getPictrue(userId);
         if (path!=null){
-            File file = new File(path);
-            FileInputStream inputStream = new FileInputStream(file);
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes, 0, inputStream.available());
             result.put("success",true);
-            result.put("picUrl",bytes);
+            result.put("picUrl","http://127.0.0.1:8080/test/user/getPictureURL/"+userId);
         }else{
             result.put("success",false);
             result.put("picUrl",null);
         }
         return result;
+    }
+
+    @GetMapping(value = "/user/getPictureURL/{userId}")
+    public byte[] getPictureURL(@PathVariable("userId") String userId)throws IOException{
+        String path = theUserMapper.getPictrue(userId);
+        System.out.println(path);
+        File file = new File(path);
+        FileInputStream inputStream = new FileInputStream(file);
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes, 0, inputStream.available());
+        System.out.println(bytes);
+        return bytes;
     }
 
     @GetMapping("/user/login")
