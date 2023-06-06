@@ -1,4 +1,4 @@
-package com.example.chatroom_backend.mybatis.entity;
+package com.example.software.mybatis.entity;
 import lombok.Data;
 
 import com.baomidou.mybatisplus.annotation.IdType;

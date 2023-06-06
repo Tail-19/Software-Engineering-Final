@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>chatroom_backend</artifactId>
+    <artifactId>Software-Engineering-Final</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>chatroom_backend</name>
-    <description>chatroom_backend</description>
+    <name>Software-Engineering-Final</name>
+    <description>Software-Engineering-Final</description>
     <properties>
         <java.version>17</java.version>
     </properties>

@@ -1,7 +1,7 @@
-package com.example.chatroom_backend.mybatis.mapper;
+package com.example.software.mybatis.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.chatroom_backend.mybatis.entity.user;
+import com.example.software.mybatis.entity.user;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

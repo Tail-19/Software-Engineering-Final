@@ -1,9 +1,9 @@
-package com.example.chatroom_backend;
+package com.example.software;
 
-import com.example.chatroom_backend.mybatis.entity.user;
-import com.example.chatroom_backend.mybatis.entity.friend_list;
-import com.example.chatroom_backend.mybatis.mapper.userMapper;
-import com.example.chatroom_backend.mybatis.mapper.listMapper;
+import com.example.software.mybatis.entity.user;
+import com.example.software.mybatis.entity.friend_list;
+import com.example.software.mybatis.mapper.userMapper;
+import com.example.software.mybatis.mapper.listMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

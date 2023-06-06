@@ -1,6 +1,6 @@
-package com.example.chatroom_backend.mybatis.mapper;
-import com.example.chatroom_backend.mybatis.entity.user;
-import com.example.chatroom_backend.mybatis.entity.friend_list;
+package com.example.software.mybatis.mapper;
+import com.example.software.mybatis.entity.user;
+import com.example.software.mybatis.entity.friend_list;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
