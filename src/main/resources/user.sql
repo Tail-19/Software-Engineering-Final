@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users;
+/*DROP TABLE IF EXISTS users;
 CREATE TABLE users
 (
     userId     bigint NOT NULL AUTO_INCREMENT,
@@ -6,7 +6,17 @@ CREATE TABLE users
     password   varchar DEFAULT NULL,
     pictureURL varchar DEFAULT NULL,
     PRIMARY KEY (userId)
+);*/
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users`
+(
+    `user_id`     bigint NOT NULL AUTO_INCREMENT,
+    `username`   varchar DEFAULT NULL,
+    `password`   varchar DEFAULT NULL,
+    `userrole`   varchar DEFAULT NULL,
+    PRIMARY KEY (`user_id`)
 );
+insert into `users` (`username`,`password`,`userrole`) values ('bomertruck','j16j16j16','manager');
 DROP TABLE IF EXISTS msgs;
 CREATE TABLE msgs
 (

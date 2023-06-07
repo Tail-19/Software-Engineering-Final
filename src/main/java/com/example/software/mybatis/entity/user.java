@@ -8,9 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class user {
     @TableId(type = IdType.AUTO)
-    private String userId;
-    private String userName;
+    private String user_id;
+    private String username;
     private String password;
-    private String pictureURL;
-
+    private String role;//"user"为普通用户，"manager"为管理员
 }

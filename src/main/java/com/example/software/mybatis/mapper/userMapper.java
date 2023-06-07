@@ -12,6 +12,16 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface userMapper extends BaseMapper<user> {
+    @Insert("insert into `users`(`username`, `password`,`userrole`) values (#{username},#{password},'user')")
+    void register(@Param("username") String username,@Param("password") String password);
+
+    @Select("select * from `users` where `username` = #{userName}")
+    user findByName(@Param("userName") String userName);
+
+    @Select("select * from `users` where `username` = #{username} and `password` = #{password}")
+    List<user> login(String username, String password);
+}
+/*public interface userMapper extends BaseMapper<user> {
     @Insert("insert into users(userName, password, pictureURL) values (#{theUser.userName},#{theUser.password},#{theUser.pictureURL})")
     @Options(useGeneratedKeys = true, keyProperty = "theUser.userId")
     void register(@Param("theUser") user theUser);
@@ -55,4 +65,4 @@ public interface userMapper extends BaseMapper<user> {
 
     @Select("select receiveUserId, content, senderUserId from msgs where (receiveUserId = #{receiverId} and senderUserId = #{senderUserId}) or (receiveUserId = #{senderUserId} and senderUserId = #{receiverId}) order by time asc")
     List<Map<String,String>> get_message(String senderUserId, String receiverId);
-}
+}*/
