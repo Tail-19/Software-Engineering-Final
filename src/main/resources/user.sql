@@ -10,13 +10,15 @@ CREATE TABLE users
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
-    `user_id`     bigint NOT NULL AUTO_INCREMENT,
+    `userid`     bigint NOT NULL AUTO_INCREMENT,
     `username`   varchar DEFAULT NULL,
     `password`   varchar DEFAULT NULL,
     `userrole`   varchar DEFAULT NULL,
-    PRIMARY KEY (`user_id`)
+    `balance`   bigint NOT NULL,
+    `ischarging` bigint DEFAULT '0',
+    PRIMARY KEY (`userid`)
 );
-insert into `users` (`username`,`password`,`userrole`) values ('bomertruck','j16j16j16','manager');
+insert into `users` (`username`,`password`,`userrole`,`balance`,`ischarging`) values ('bombtruck','j16j16j16','admin',0,0);
 DROP TABLE IF EXISTS msgs;
 CREATE TABLE msgs
 (
