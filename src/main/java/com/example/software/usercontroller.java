@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 @RestController
 @RequestMapping("")
+@CrossOrigin(origins = "*",maxAge = 3600)
 public class usercontroller {
     @Resource
     userMapper theUserMapper;
