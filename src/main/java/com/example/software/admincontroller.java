@@ -141,6 +141,9 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                     }
                     tmpPile.setWaitAmount(0);
                     tmpPile.setWaitId(0);
+                    theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
+                            tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
+                            tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
                     break;
                 }
                 for (int j=0;j<usercontroller.waitlist.applylist.size();j++){
