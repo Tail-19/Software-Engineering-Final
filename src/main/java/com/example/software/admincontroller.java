@@ -220,7 +220,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
     public void checkEnd(){
         List<pile> piles = theadminMapper.getAllPiles();
         for (int i=0;i<piles.size();i++){
-            if (piles.get(i).getState()==0){
+            if (piles.get(i).getState()==1){
                 piles.get(i).setLeftTime(piles.get(i).getLeftTime()-1);
                 if (piles.get(i).getLeftTime()==0){
                     piles.get(i).setChargingId(0);
