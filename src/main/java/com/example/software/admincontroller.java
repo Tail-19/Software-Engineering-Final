@@ -128,6 +128,21 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
         List<pile> piles = theadminMapper.getAllPiles();
         for (int i=0;i<piles.size();i++){
             if (piles.get(i).getState()==0){
+                if (piles.get(i).getWaitId()!=0&&piles.get(i).getWaitAmount()!=0){
+                    pile tmpPile = new pile();
+                    tmpPile = theadminMapper.getPile(i+1).get(0);
+                    tmpPile.setState(1);
+                    tmpPile.setChargingNumber(tmpPile.getChargingNumber()+1);
+                    tmpPile.setChargingId(tmpPile.getWaitId());
+                    if (tmpPile.getType().equals("fast")){
+                        tmpPile.setLeftTime((int)tmpPile.getWaitAmount()/30*60);
+                    }else{
+                        tmpPile.setLeftTime((int)tmpPile.getWaitAmount()/7*60);
+                    }
+                    tmpPile.setWaitAmount(0);
+                    tmpPile.setWaitId(0);
+                    break;
+                }
                 for (int j=0;j<usercontroller.waitlist.applylist.size();j++){
                     if (Objects.equals(usercontroller.waitlist.applylist.get(j).getMode(), piles.get(i).getType())){
                         pile tmpPile = new pile();
@@ -135,7 +150,11 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         tmpPile.setState(1);
                         tmpPile.setChargingNumber(tmpPile.getChargingNumber()+1);
                         tmpPile.setChargingId(usercontroller.waitlist.applylist.get(j).userid);
-
+                        if (tmpPile.getType()=="fast"){
+                            tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()/30*60);
+                        }else{
+                            tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()/7*60);
+                        }
                         theadminMapper.updateById(tmpPile);
                         for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
                             usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
@@ -143,7 +162,8 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                     }
                     break;
                 }
-            }else if (piles.get(i).getState()==1&&piles.get(i).getWaitId() == 0){
+            }
+            if (piles.get(i).getState()==1&&piles.get(i).getWaitId() == 0){
                 for (int j=0;j<usercontroller.waitlist.applylist.size();j++){
                     if (Objects.equals(usercontroller.waitlist.applylist.get(j).getMode(), piles.get(i).getType())){
                         pile tmpPile = new pile();
@@ -195,7 +215,14 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
     }
 
     public void checkEnd(){
-
+        List<pile> piles = theadminMapper.getAllPiles();
+        for (int i=0;i<piles.size();i++){
+            piles.get(i).setLeftTime(piles.get(i).getLeftTime()-1);
+            if (piles.get(i).getLeftTime()==0){
+                piles.get(i).setChargingId(0);
+                piles.get(i).setState(0);
+            }
+        }
     }
 
     public void start(){
@@ -206,6 +233,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                 calTimePri();
                 calFee();
                 getUsers();
+                checkEnd();
             }
         }, 0 , 3000);
     }

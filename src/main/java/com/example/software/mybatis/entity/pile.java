@@ -43,6 +43,8 @@ public class pile {     //充电桩
     private double totalCost;
 
     private double waitAmount;
+
+    private int leftTime;
 }
 
 
