@@ -149,6 +149,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         pile tmpPile = new pile();
                         tmpPile = theadminMapper.getPile(i+1).get(0);
                         tmpPile.setWaitId(usercontroller.waitlist.applylist.get(j).userid);
+                        tmpPile.setWaitAmount(usercontroller.waitlist.applylist.get(j).getAmount());
                         theadminMapper.updateById(tmpPile);
                         for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
                             usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
@@ -191,6 +192,10 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
         }else{
             curFee=0.4;
         }
+    }
+
+    public void checkEnd(){
+
     }
 
     public void start(){

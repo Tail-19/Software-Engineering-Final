@@ -42,7 +42,7 @@ public class pile {     //充电桩
     //总费用（充电+服务）
     private double totalCost;
 
-
+    private double waitAmount;
 }
 
 
