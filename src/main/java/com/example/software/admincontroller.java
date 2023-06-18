@@ -155,6 +155,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         }else{
                             tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()/7*60);
                         }
+                        tmpPile.setWaitAmount(0);
                         theadminMapper.updateById(tmpPile.getId(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
                                 tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                                 tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
@@ -244,6 +245,41 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
         }, 0 , 3000);
     }
 
+    /*
+    //查询充电状态
+    //从详单中对应user_id查询最新一条
+    @GetMapping("/chargingRecord/queryChargingState")
+    public Map<String, Object> queryChargingState(){
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        List<chargingRecord> chargingRecords = theadminMapper.getChargingRecord();
+        if (chargingRecords.size()==0){
+            result.put("code",20000);
+            result.put("message","success");
+            result.put("data","0");
+            return result;
+        }
+        chargingRecord tmp = chargingRecords.get(chargingRecords.size()-1);
+        result.put("code",20000);
+        result.put("message","success");
+        result.put("data",tmp.getChargingState());
+        return result;
+    }
+    */
+    //查询空闲充电桩有几个
+    @GetMapping("/chargingPile/spare")
+    public Map<String, Object> spare(){
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+
+        List<pile>  pile = theadminMapper.getFreePiles();
+        result.put("code",20000);
+        result.put("message","success");
+        result.put("data",pile.size());
+        return result;
+    }
+
+
     //查询充电桩等待队列
     @GetMapping("/chargingPile/wait")
     public Map<String, Object> wait(@RequestParam("id") String id){
@@ -262,9 +298,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
             int waitid = Integer.parseInt(theadminMapper.getWaitid(pileid));
             data.put("waitId",waitid);
             data.put("mode",theadminMapper.getType(pileid));
-            //apply tmep =Applylist.find_apply_byid(waitid);
-
-            //data.put("amount",tmep.amount);
+            data.put("amount",theadminMapper.getWaitamount(pileid));
             result.put("code",20000);
             result.put("message","success");
             result.put("data",data);

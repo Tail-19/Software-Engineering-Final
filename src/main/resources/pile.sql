@@ -23,8 +23,8 @@ CREATE TABLE piles
 
 --初始化充电桩信息
 INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (1, 0, 0, 'fast', 1, 0, 0.00, 0.00, 0.00, 0.00, 0);
-INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (2, 4, 5, 'fast', 2, 0, 0.00, 0.00, 0.00, 0.00, 0);
+INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (2, 0, 0, 'fast', 2, 0, 0.00, 0.00, 0.00, 0.00, 0);
 INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (3, 0, 0, 'slow', 3, 0, 0.00, 0.00, 0.00, 0.00, 0);
 INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (4, 0, 0, 'slow', 4, 0, 0.00, 0.00, 0.00, 0.00, 0);
-INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (5, 9, 0, 'slow', 5, 0, 0.00, 0.00, 0.00, 0.00, 0);
+INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (5, 0, 0, 'slow', 5, 0, 0.00, 0.00, 0.00, 0.00, 0);
 

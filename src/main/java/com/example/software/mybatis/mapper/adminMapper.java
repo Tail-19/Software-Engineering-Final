@@ -36,6 +36,9 @@ public interface adminMapper extends BaseMapper<pile>{
     @Select("select `wait_id` from `piles` where `id` = #{id}")
     String getWaitid(@Param("id") int id);
 
+    //统计空闲充电桩
+    @Select("select 'id' from `piles` where `state` = 0")
+    List<pile> getFreePiles();
 
     @Update("update `piles` set `state` = #{id},`charging_id` = #{pile.chargingId},`wait_id` = #{pile.waitId},`charging_number` = #{pile.chargingNumber}," +
             "`charging_time` = #{pile.chargingTime},`charging_amount` = #{pile.chargingAmount},`charging_cost` = #{pile.chargingCost},`service_cost` = #{pile.serviceCost}," +
@@ -44,6 +47,15 @@ public interface adminMapper extends BaseMapper<pile>{
                    charging_number, @Param("charging_time") int charging_time, @Param("charging_amount") double charging_amount,
                    @Param("charging_cost") double charging_cost, @Param("service_cost") double service_cost, @Param("total_cost")
                    double total_cost, @Param("wait_amount") double wait_amount, @Param("left_time") int left_time);
+    //更新数据
+    @Update("update `piles` set `chargingId` = #{chargingId} where `id` = #{id}")
+    int setchargingId(@Param("id") int id, @Param("chargingId") int chargingId);
+
+    @Update("upadte `piles` set `charging_id` = #{chargingId} where `id` = #{id}")
+    int setcargingId(@Param("id") int id, @Param("chargingId") int chargingId);
 
 
+    //查看等待车辆充电量
+    @Select("select `wait_amount` from `piles` where `id` = #{id}")
+    int getWaitamount(@Param("id") int id);
 }

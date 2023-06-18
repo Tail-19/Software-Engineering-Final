@@ -72,7 +72,10 @@ public class usercontroller {
     public Map<String, Object> startcharge(@RequestBody Map<String,Object> input){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
-        apply app=new apply((int) input.get("id"),(String) input.get("mode"),(int) input.get("amount"));
+        int id = Integer.parseInt(input.get("id").toString());
+        String mode=(String) input.get("mode");
+        int amount=Integer.parseInt(input.get("amount").toString());
+        apply app=new apply(id,mode,amount);
         if (waitlist.add_apply(app))
         {
             result.put("code", 20000);
