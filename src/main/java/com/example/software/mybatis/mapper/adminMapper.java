@@ -40,10 +40,10 @@ public interface adminMapper extends BaseMapper<pile>{
     @Select("select 'id' from `piles` where `state` = 0")
     List<pile> getFreePiles();
 
-    @Update("update `piles` set `state` = #{id},`charging_id` = #{pile.chargingId},`wait_id` = #{pile.waitId},`charging_number` = #{pile.chargingNumber}," +
-            "`charging_time` = #{pile.chargingTime},`charging_amount` = #{pile.chargingAmount},`charging_cost` = #{pile.chargingCost},`service_cost` = #{pile.serviceCost}," +
-            "`total_cost` = #{pile.totalCost},`wait_amount` = #{pile.waitAmount},`left_time` = #{pile.leftTime},  where `id` = #{pile.id}")
-    int updateById(@Param("id") int id,@Param("charging_id") int charging_id, @Param("wait_id") int wait_id, @Param("charging_number") int
+    @Update("update `piles` set `state` = #{state},`charging_id` = #{charging_id},`wait_id` = #{wait_id},`charging_number` = #{charging_number}," +
+            "`charging_time` = #{charging_time},`charging_amount` = #{charging_amount},`charging_cost` = #{charging_cost},`service_cost` = #{service_cost}," +
+            "`total_cost` = #{total_cost},`wait_amount` = #{wait_amount},`left_time` = #{left_time},  where `id` = #{id}")
+    int updateById(@Param("id") int id,@Param("state") int state, @Param("charging_id") int charging_id, @Param("wait_id") int wait_id, @Param("charging_number") int
                    charging_number, @Param("charging_time") int charging_time, @Param("charging_amount") double charging_amount,
                    @Param("charging_cost") double charging_cost, @Param("service_cost") double service_cost, @Param("total_cost")
                    double total_cost, @Param("wait_amount") double wait_amount, @Param("left_time") int left_time);

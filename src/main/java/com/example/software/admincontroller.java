@@ -156,7 +156,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                             tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()/7*60);
                         }
                         tmpPile.setWaitAmount(0);
-                        theadminMapper.updateById(tmpPile.getId(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
+                        theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
                                 tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                                 tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
                         for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
@@ -173,7 +173,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         tmpPile = theadminMapper.getPile(i+1).get(0);
                         tmpPile.setWaitId(usercontroller.waitlist.applylist.get(j).userid);
                         tmpPile.setWaitAmount(usercontroller.waitlist.applylist.get(j).getAmount());
-                        theadminMapper.updateById(tmpPile.getId(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
+                        theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
                                 tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                                 tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
                         for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
@@ -203,7 +203,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                     tmpTotal = curFee*30/60+0.8*30/60;
                 }
                 tmpPile.setTotalCost(tmpPile.getTotalCost()+tmpTotal);
-                theadminMapper.updateById(tmpPile.getId(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
+                theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
                         tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                         tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
             }
