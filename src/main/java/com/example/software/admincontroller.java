@@ -68,7 +68,14 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
             result.put("code",20000);
             result.put("message","设置充电桩状态成功");
             result.put("data",null);
-            //改变充电桩状态后 应有调度算法自动适配 还没写
+            pile tmpPile = theadminMapper.getPile(pileid).get(0);
+            tmpPile.setChargingId(0);
+            tmpPile.setLeftTime(0);
+            tmpPile.setWaitId(0);
+            tmpPile.setWaitAmount(0);
+            theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
+                tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
+                tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
 
         /*
         else{
