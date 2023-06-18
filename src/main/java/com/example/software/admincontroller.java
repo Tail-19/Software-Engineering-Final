@@ -155,7 +155,9 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         }else{
                             tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()/7*60);
                         }
-                        theadminMapper.updateById(tmpPile);
+                        theadminMapper.updateById(tmpPile.getId(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
+                                tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
+                                tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
                         for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
                             usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
                         }
@@ -200,7 +202,9 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                     tmpTotal = curFee*30/60+0.8*30/60;
                 }
                 tmpPile.setTotalCost(tmpPile.getTotalCost()+tmpTotal);
-                theadminMapper.updateById(tmpPile);
+                theadminMapper.updateById(tmpPile.getId(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
+                        tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
+                        tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
             }
         }
     }
