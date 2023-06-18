@@ -32,6 +32,11 @@ import java.util.*;
 @CrossOrigin(origins = "*",maxAge = 3600)
 public class admincontroller implements ApplicationListener<ContextRefreshedEvent> {
 
+    LocalTime myTime = LocalTime.of(5, 55, 0);
+    double curFee = 0.4;
+    @Resource
+    adminMapper theadminMapper;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (contextRefreshedEvent.getApplicationContext().getParent() == null) {//保证只执行一次
@@ -39,10 +44,6 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
             start();
         }
     }
-
-    @Resource
-    adminMapper theadminMapper;
-
 
     //判断改变状态是否合法
     /*
@@ -139,14 +140,49 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
         }
     }
 
+    public void calFee(){
+        List<pile> piles = theadminMapper.getAllPiles();
+        for (int i=0;i<piles.size();i++){
+            if (piles.get(i).getState()==1){
+                pile tmpPile = piles.get(i);
+                tmpPile.setChargingTime(tmpPile.getChargingTime()+1);
+                double tmpTotal = 0;
+                if (tmpPile.getType().equals("slow")){
+                    tmpPile.setChargingCost(tmpPile.getChargingCost()+curFee*7/60);
+                    tmpPile.setServiceCost(tmpPile.getServiceCost()+0.8*7/60);
+                    tmpTotal = curFee*7/60+0.8*7/60;
+                }else{
+                    tmpPile.setChargingCost(tmpPile.getChargingCost()+curFee*30/60);
+                    tmpPile.setServiceCost(tmpPile.getServiceCost()+0.8*30/60);
+                    tmpTotal = curFee*30/60+0.8*30/60;
+                }
+                tmpPile.setTotalCost(tmpPile.getTotalCost()+tmpTotal);
+                theadminMapper.updateById(tmpPile);
+            }
+        }
+    }
+
+    public void calTimePri(){
+        myTime = myTime.plusMinutes(1);
+        if (myTime.isAfter(LocalTime.of(23,0,0))&& myTime.isBefore(LocalTime.of(7,0,0))){
+            curFee=0.7;
+        }else if(myTime.isAfter(LocalTime.of(10,0,0))&& myTime.isBefore(LocalTime.of(15,0,0))){
+            curFee=1.0;
+        }else{
+            curFee=0.4;
+        }
+    }
+
     public void start(){
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                calTimePri();
+                calFee();
                 getUsers();
             }
-        }, 0 , 50);
+        }, 0 , 3000);
     }
 
 
