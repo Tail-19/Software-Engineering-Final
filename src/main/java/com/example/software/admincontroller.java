@@ -132,9 +132,27 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         pile tmpPile = new pile();
                         tmpPile = theadminMapper.getPile(i+1).get(0);
                         tmpPile.setState(1);
+                        tmpPile.setChargingNumber(tmpPile.getChargingNumber()+1);
                         tmpPile.setChargingId(usercontroller.waitlist.applylist.get(j).userid);
                         theadminMapper.updateById(tmpPile);
+                        for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
+                            usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
+                        }
                     }
+                    break;
+                }
+            }else if (piles.get(i).getState()==1&&piles.get(i).getWaitId() == 0){
+                for (int j=0;j<usercontroller.waitlist.applylist.size();j++){
+                    if (Objects.equals(usercontroller.waitlist.applylist.get(j).getMode(), piles.get(i).getType())){
+                        pile tmpPile = new pile();
+                        tmpPile = theadminMapper.getPile(i+1).get(0);
+                        tmpPile.setWaitId(usercontroller.waitlist.applylist.get(j).userid);
+                        theadminMapper.updateById(tmpPile);
+                        for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
+                            usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
+                        }
+                    }
+                    break;
                 }
             }
         }
