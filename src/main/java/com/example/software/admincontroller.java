@@ -144,7 +144,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                     theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
                             tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                             tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
-                    break;
+                    continue;
                 }
                 for (int j=0;j<usercontroller.waitlist.applylist.size();j++){
                     if (Objects.equals(usercontroller.waitlist.applylist.get(j).getMode(), piles.get(i).getType())){
@@ -163,10 +163,12 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                                 tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                                 tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
                         usercontroller.waitlist.delete_apply_byindex(j);
+                        break;
                     }
-                    break;
                 }
             }
+        }
+        for (int i=0;i<piles.size();i++){
             if (piles.get(i).getState()==1&&piles.get(i).getWaitId() == 0){
                 for (int j=0;j<usercontroller.waitlist.applylist.size();j++){
                     if (Objects.equals(usercontroller.waitlist.applylist.get(j).getMode(), piles.get(i).getType())){
