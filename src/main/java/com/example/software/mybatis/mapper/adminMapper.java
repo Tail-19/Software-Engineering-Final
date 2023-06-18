@@ -22,6 +22,10 @@ public interface adminMapper extends BaseMapper<pile>{
     @Select("select `state` from `piles` where `id` = #{id}")
     int getState(@Param("id") int id);
 
+    //查看充电桩类型
+    @Select("select `type` from `piles` where `id` = #{id}")
+    String getType(@Param("id") int id);
+
     //查看充电桩所有信息
     @Select("select * from `piles` order by `id`")
     List<pile> getAllPiles();
@@ -29,5 +33,10 @@ public interface adminMapper extends BaseMapper<pile>{
     //查看单个充电桩所有信息
     @Select("select * from `piles` where `id` = #{id}")
     List<pile> getPile(@Param("id") int id);
+
+    //查看等待队列id
+    @Select("select `wait_id` from `piles` where `id` = #{id}")
+    String getWaitid(@Param("id") int id);
+
 
 }

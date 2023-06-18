@@ -36,6 +36,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
     double curFee = 0.4;
     @Resource
     adminMapper theadminMapper;
+    public  apply_list Applylist= new apply_list();
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -134,6 +135,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         tmpPile.setState(1);
                         tmpPile.setChargingNumber(tmpPile.getChargingNumber()+1);
                         tmpPile.setChargingId(usercontroller.waitlist.applylist.get(j).userid);
+
                         theadminMapper.updateById(tmpPile);
                         for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
                             usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
@@ -201,6 +203,36 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                 getUsers();
             }
         }, 0 , 3000);
+    }
+
+    //查询充电桩等待队列
+    @GetMapping("/chargingPile/wait")
+    public Map<String, Object> wait(@RequestParam("id") String id){
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        int pileid= Integer.parseInt(id);
+        if(theadminMapper.getWaitid(pileid)== null||theadminMapper.getWaitid(pileid).equals("0"))
+        {
+            result.put("code",20003);
+            result.put("message","没有等待的用户");
+            result.put("data",null);
+            return result;
+        }
+        else{
+            int waitid = Integer.parseInt(theadminMapper.getWaitid(pileid));
+            data.put("waitId",waitid);
+            data.put("mode",theadminMapper.getType(pileid));
+            //apply tmep =Applylist.find_apply_byid(waitid);
+
+            //data.put("amount",tmep.amount);
+            result.put("code",20000);
+            result.put("message","success");
+            result.put("data",data);
+            return result;
+        }
+
+
     }
 
 
