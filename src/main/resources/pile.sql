@@ -20,9 +20,9 @@ CREATE TABLE piles
 );
 
 --初始化充电桩信息
-INSERT INTO `charging_pile` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (1, 0, 0, 'fast', 1, 1, 1.00, 12.00, 123.00, 321312.00, 0);
-INSERT INTO `charging_pile` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (2, 4, 5, 'fast', 2, 2, 2.00, 12.00, 23.00, 21321312.00, 0);
-INSERT INTO `charging_pile` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (3, 0, 0, 'slow', 3, 3, 3.00, 122.00, 213.00, 321321.00, 0);
-INSERT INTO `charging_pile` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (4, 0, 0, 'slow', 4, 4, 4.00, 3.00, 123.00, 123213.00, 0);
-INSERT INTO `charging_pile` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (5, 9, 0, 'slow', 5, 5, 5.00, 45.00, 56.00, 321321.00, 0);
+INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (1, 0, 0, 'fast', 1, 1, 1.00, 12.00, 123.00, 321312.00, 0);
+INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (2, 4, 5, 'fast', 2, 2, 2.00, 12.00, 23.00, 21321312.00, 0);
+INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (3, 0, 0, 'slow', 3, 3, 3.00, 122.00, 213.00, 321321.00, 0);
+INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (4, 0, 0, 'slow', 4, 4, 4.00, 3.00, 123.00, 123213.00, 0);
+INSERT INTO `piles` (`id`, `charging_id`, `wait_id`, `type`, `charging_number`, `charging_time`, `charging_amount`, `charging_cost`, `service_cost`, `total_cost`, `state`) VALUES (5, 9, 0, 'slow', 5, 5, 5.00, 45.00, 56.00, 321321.00, 0);
 
