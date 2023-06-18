@@ -5,9 +5,7 @@ import com.example.software.mybatis.entity.pile;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 @Repository
@@ -37,6 +35,12 @@ public interface adminMapper extends BaseMapper<pile>{
     //查看等待队列id
     @Select("select `wait_id` from `piles` where `id` = #{id}")
     String getWaitid(@Param("id") int id);
+
+    @Override
+    @Update("update `piles` set `state` = #{pile.id},`charging_id` = #{pile.chargingId},`wait_id` = #{pile.waitId},`charging_number` = #{pile.chargingNumber}," +
+            "`charging_time` = #{pile.chargingTime},`charging_amount` = #{pile.chargingAmount},`charging_cost` = #{pile.chargingCost},`service_cost` = #{pile.serviceCost}," +
+            "`total_cost` = #{pile.totalCost},`wait_amount` = #{pile.waitAmount},`left_time` = #{pile.leftTime},  where `id` = #{pile.id}")
+    int updateById(@Param("pile") pile pile);
 
 
 }
