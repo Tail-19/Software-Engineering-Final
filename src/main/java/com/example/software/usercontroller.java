@@ -40,7 +40,7 @@ public class usercontroller {
         theUser.setPassword(input.get("password"));
         theUser.setUsername(input.get("username"));*/
         Map<String, Object> result = new HashMap<>();
-        if ((input.get("password").length()>=8&&input.get("username").length()!=0)&&theUserMapper.findByName(input.get("username"))==null){
+        if (theUserMapper.findByName(input.get("username"))==null){
             user theuser=new user(input.get("username"),input.get("password"),"user");
             theUserMapper.register(theuser);
             result.put("code",20000);
