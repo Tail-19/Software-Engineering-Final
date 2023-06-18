@@ -17,6 +17,7 @@ CREATE TABLE piles
     `total_cost` decimal(10,2) DEFAULT NULL,  --总费用（充电+服务）
     `state` int DEFAULT NULL,  --充电桩状态，分为"0-停止工作","1-正在充电","2-故障"
     `wait_amount` int DEFAULT NULL,  --等待用户的充电量
+    `left_time` int DEFAULT NULL, --充电剩余时间
     PRIMARY KEY (`id`)
 );
 
