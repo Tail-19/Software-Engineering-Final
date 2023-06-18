@@ -21,13 +21,13 @@ CREATE TABLE `users`
 insert into `users` (`username`,`password`,`userrole`,`balance`,`ischarging`) values ('bombtruck','j16j16j16','admin',0,0);
 --测试账号
 insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('27','car1','123456','admin',1000,0);
-insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('28','car1','123456','admin',1000,0);
-insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('29','car1','123456','admin',1000,0);
-insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('30','car1','123456','admin',1000,0);
-insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('31','car1','123456','admin',1000,0);
-insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('32','car1','123456','admin',1000,0);
-insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('33','car1','123456','admin',1000,0);
-insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('34','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('28','car2','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('29','car3','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('30','car4','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('31','car5','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('32','car6','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('33','car7','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('34','car8','123456','admin',1000,0);
 
 DROP TABLE IF EXISTS msgs;
 CREATE TABLE msgs
