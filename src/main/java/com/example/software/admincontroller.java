@@ -229,6 +229,14 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                 piles.get(i).setChargingId(0);
                 piles.get(i).setState(0);
             }
+            if (piles.get(i).getType()=="fast"){
+                piles.get(i).setChargingAmount(piles.get(i).getChargingAmount()+30/60);
+            }else{
+                piles.get(i).setChargingAmount(piles.get(i).getChargingAmount()+7/60);
+            }
+            theadminMapper.updateById(piles.get(i).getId(),piles.get(i).getState(),piles.get(i).getChargingId(),piles.get(i).getWaitId(),piles.get(i).getChargingNumber(),
+                    piles.get(i).getChargingTime(),piles.get(i).getChargingAmount(),piles.get(i).getChargingCost(),piles.get(i).getServiceCost(),
+                    piles.get(i).getTotalCost(),piles.get(i).getWaitAmount(),piles.get(i).getLeftTime());
         }
     }
 
