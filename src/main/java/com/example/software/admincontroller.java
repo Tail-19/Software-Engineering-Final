@@ -134,10 +134,10 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                     tmpPile.setState(1);
                     tmpPile.setChargingNumber(tmpPile.getChargingNumber()+1);
                     tmpPile.setChargingId(tmpPile.getWaitId());
-                    if (tmpPile.getType().equals("fast")){
-                        tmpPile.setLeftTime((int)tmpPile.getWaitAmount()/30*60);
+                    if (tmpPile.getType()=="fast"){
+                        tmpPile.setLeftTime((int)tmpPile.getWaitAmount()*60/30);
                     }else{
-                        tmpPile.setLeftTime((int)tmpPile.getWaitAmount()/7*60);
+                        tmpPile.setLeftTime((int)tmpPile.getWaitAmount()*60/7);
                     }
                     tmpPile.setWaitAmount(0);
                     tmpPile.setWaitId(0);
@@ -154,9 +154,9 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         tmpPile.setChargingNumber(tmpPile.getChargingNumber()+1);
                         tmpPile.setChargingId(usercontroller.waitlist.applylist.get(j).userid);
                         if (tmpPile.getType()=="fast"){
-                            tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()/30*60);
+                            tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()*60/30);
                         }else{
-                            tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()/7*60);
+                            tmpPile.setLeftTime(usercontroller.waitlist.applylist.get(j).getAmount()*60/7);
                         }
                         tmpPile.setWaitAmount(0);
                         theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
