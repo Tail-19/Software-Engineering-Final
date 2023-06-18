@@ -7,6 +7,8 @@ import com.example.software.mybatis.mapper.userMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +32,7 @@ import java.util.Map;
 public class usercontroller {
     @Resource
     userMapper theUserMapper;
-    apply_list waitlist=new apply_list();
+    public static apply_list waitlist=new apply_list();
     @PostMapping("/user/register")
     public Map<String, Object> register(@RequestBody Map<String,String> input){
         //System.out.println("用户名"+input.get("username"));

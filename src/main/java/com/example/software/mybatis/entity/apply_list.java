@@ -2,7 +2,7 @@ package com.example.software.mybatis.entity;
 import com.example.software.mybatis.entity.apply;
 import java.util.Vector;
 public class apply_list {
-    public Vector applylist;
+    public Vector<apply> applylist;
     public apply_list()    //向申请队列中添加申请
     {
         this.applylist=new Vector<apply>();

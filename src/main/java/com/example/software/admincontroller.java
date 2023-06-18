@@ -6,10 +6,13 @@ import com.example.software.mybatis.entity.apply_list;
 import com.example.software.mybatis.entity.pile;
 import com.example.software.mybatis.mapper.userMapper;
 import com.example.software.mybatis.mapper.adminMapper;
+import com.example.software.usercontroller;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
@@ -22,20 +25,23 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("")
 @CrossOrigin(origins = "*",maxAge = 3600)
-public class admincontroller {
+public class admincontroller implements ApplicationListener<ContextRefreshedEvent> {
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if (contextRefreshedEvent.getApplicationContext().getParent() == null) {//保证只执行一次
+            //需要执行的方法
+            start();
+        }
+    }
 
     @Resource
     adminMapper theadminMapper;
-
-
 
 
     //判断改变状态是否合法
@@ -116,7 +122,32 @@ public class admincontroller {
         return result;
     }
 
+    public void getUsers(){
+        List<pile> piles = theadminMapper.getAllPiles();
+        for (int i=0;i<piles.size();i++){
+            if (piles.get(i).getState()==0){
+                for (int j=0;j<usercontroller.waitlist.applylist.size();j++){
+                    if (Objects.equals(usercontroller.waitlist.applylist.get(j).getMode(), piles.get(i).getType())){
+                        pile tmpPile = new pile();
+                        tmpPile = theadminMapper.getPile(i+1).get(0);
+                        tmpPile.setState(1);
+                        tmpPile.setChargingId(usercontroller.waitlist.applylist.get(j).userid);
+                        theadminMapper.updateById(tmpPile);
+                    }
+                }
+            }
+        }
+    }
 
+    public void start(){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getUsers();
+            }
+        }, 0 , 50);
+    }
 
 
 
