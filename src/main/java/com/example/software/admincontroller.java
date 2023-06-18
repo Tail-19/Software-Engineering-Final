@@ -57,7 +57,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
     */
 
     //设置充电桩状态 传入id和state 0 空闲-free","1-充电中-working","2-故障-fault"，"3-关闭-closed"
-    @PutMapping("/chargingAdmin/state")
+    @PutMapping("/chargingPile/state")
     public Map<String, Object> set_pile(@RequestParam Map<String,String> input){
         Map<String, Object> result = new HashMap<>();
         int pileid= Integer.parseInt(input.get("id"));

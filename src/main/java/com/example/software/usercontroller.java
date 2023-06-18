@@ -189,7 +189,7 @@ public class usercontroller {
     }
 
     @GetMapping("/user/all")
-    public Map<String, Object> getall(@RequestBody Map<String,Object> input){
+    public Map<String, Object> getall(@RequestParam Map<String,Object> input){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
         //System.out.println(theUserMapper.findByName((String) input.get("username")));
