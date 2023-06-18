@@ -19,6 +19,16 @@ CREATE TABLE `users`
     PRIMARY KEY (`userid`)
 );
 insert into `users` (`username`,`password`,`userrole`,`balance`,`ischarging`) values ('bombtruck','j16j16j16','admin',0,0);
+--测试账号
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('27','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('28','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('29','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('30','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('31','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('32','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('33','car1','123456','admin',1000,0);
+insert into `users` (`userid`,`username`,`password`,`userrole`,`balance`,`ischarging`) values ('34','car1','123456','admin',1000,0);
+
 DROP TABLE IF EXISTS msgs;
 CREATE TABLE msgs
 (
