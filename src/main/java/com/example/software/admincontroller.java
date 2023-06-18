@@ -159,9 +159,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
                                 tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                                 tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
-                        for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
-                            usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
-                        }
+                        usercontroller.waitlist.delete_apply_byindex(j);
                     }
                     break;
                 }
@@ -176,9 +174,7 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                         theadminMapper.updateById(tmpPile.getId(),tmpPile.getState(),tmpPile.getChargingId(),tmpPile.getWaitId(),tmpPile.getChargingNumber(),
                                 tmpPile.getChargingTime(),tmpPile.getChargingAmount(),tmpPile.getChargingCost(),tmpPile.getServiceCost(),
                                 tmpPile.getTotalCost(),tmpPile.getWaitAmount(),tmpPile.getLeftTime());
-                        for (int k=j;k<usercontroller.waitlist.applylist.size()-1;k++){
-                            usercontroller.waitlist.applylist.set(k,usercontroller.waitlist.applylist.get(k+1));
-                        }
+                        usercontroller.waitlist.delete_apply_byindex(j);
                     }
                     break;
                 }
@@ -231,9 +227,9 @@ public class admincontroller implements ApplicationListener<ContextRefreshedEven
                     piles.get(i).setState(0);
                 }
                 if (piles.get(i).getType()=="fast"){
-                    piles.get(i).setChargingAmount(piles.get(i).getChargingAmount()+30/60);
+                    piles.get(i).setChargingAmount(piles.get(i).getChargingAmount()+(double)30/60);
                 }else{
-                    piles.get(i).setChargingAmount(piles.get(i).getChargingAmount()+7/60);
+                    piles.get(i).setChargingAmount(piles.get(i).getChargingAmount()+(double)7/60);
                 }
                 theadminMapper.updateById(piles.get(i).getId(),piles.get(i).getState(),piles.get(i).getChargingId(),piles.get(i).getWaitId(),piles.get(i).getChargingNumber(),
                         piles.get(i).getChargingTime(),piles.get(i).getChargingAmount(),piles.get(i).getChargingCost(),piles.get(i).getServiceCost(),
